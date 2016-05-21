@@ -6,5 +6,9 @@
         - @chat.errors.full_messages.each do |msg|
           %li= msg
 
+  .field_box
+    = f.text_field :content
+    = f.hidden_field :user_type, value: "user"
+
   .actions
     = f.submit 'Save'

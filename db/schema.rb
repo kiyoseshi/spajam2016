@@ -11,11 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160520123126) do
+ActiveRecord::Schema.define(version: 20160521155052) do
 
   create_table "chats", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string   "content"
+    t.string   "user_type"
   end
 
 end

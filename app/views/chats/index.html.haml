@@ -1,27 +1,5 @@
-%h1 Listing chats
-
-%table
-  %thead
-    %tr
-      %th
-      %th
-      %th
-
-  %tbody
-    - @chats.each do |chat|
-      %tr
-        %td= link_to 'Show', chat
-        %td= link_to 'Edit', edit_chat_path(chat)
-        %td= link_to 'Destroy', chat, :method => :delete, :data => { :confirm => 'Are you sure?' }
-
-%br
-
-= link_to 'New Chat', new_chat_path
-
-
-= @text
-
-
-
-.massage
-  = @msg["message"]
+- if @chats.present?
+  = @chats.order('created_at DESC').first.content
+- else
+  %p Hey, I'm "AI-TAISHO"
+= render partial: 'form'
