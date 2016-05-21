@@ -22,5 +22,25 @@ module Spajam
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+
+    config.wit_token = Y3SKN3OLWR3LT57GRVRR6EZNAQF7MMMG
+
+    config.wit_actions = {
+      :say => -> (session_id, context, msg) {
+        p msg
+      },
+      :merge => -> (session_id, context, entities, msg) {
+        loc = first_entity_value entities, 'location'
+        context['loc'] = loc unless loc.nil?
+        return context
+      },
+      :error => -> (session_id, context, error) {
+        p error.message
+      },
+      :'fetch-weather' => -> (session_id, context) {
+        context['forecast'] = 'sunny'
+        return context
+      },
+    }
   end
 end
