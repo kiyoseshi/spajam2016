@@ -23,7 +23,7 @@ module Spajam
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
 
-    config.wit_token = Y3SKN3OLWR3LT57GRVRR6EZNAQF7MMMG
+    #config.wit_token = Y3SKN3OLWR3LT57GRVRR6EZNAQF7MMMG
 
     config.wit_actions = {
       :say => -> (session_id, context, msg) {
