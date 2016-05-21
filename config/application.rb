@@ -30,7 +30,14 @@ module Spajam
         p msg
       },
       :merge => -> (session_id, context, entities, msg) {
-        loc = first_entity_value entities, 'location'
+
+        loc = nil if entities.has_key?('location')
+        val = entities['location'][0]['value'] unless loc.nil?
+        loc =  nil if val.nil?
+        unless val.nil?
+          loc =  val.is_a?(Hash) ? val['value'] : val
+        end
+
         context['loc'] = loc unless loc.nil?
         return context
       },
