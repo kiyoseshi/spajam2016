@@ -5,6 +5,9 @@ class ChatsController < ApplicationController
   # GET /chats.json
   def index
     @chats = Chat.all
+    wit = Wit.new('Y3SKN3OLWR3LT57GRVRR6EZNAQF7MMMG', Spajam::Application.config.wit_actions)
+    message = wit.message("What's the weather?")
+    @text = message['outcomes'][0]['_text']
   end
 
   # GET /chats/1
