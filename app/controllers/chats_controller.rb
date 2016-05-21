@@ -50,7 +50,7 @@ class ChatsController < ApplicationController
     wit = Wit.new('NXJJAH33CJFJUHCX7XXRGILI3MW5WWS5', wit_actions)
     @run_actions = wit.run_actions('123abc', {}, {})
     message = wit.message(chat.content)
-    run_actions = wit.run_actions('123abc', {}, {})
+    run_actions = wit.run_actions('123abc', chat.content, {})
     bot = Chat.new({"content" => @msg["message"], "user_type" => "bot"})
     if bot.save
       redirect_to chats_path
