@@ -4,10 +4,36 @@ class ChatsController < ApplicationController
   # GET /chats
   # GET /chats.json
   def index
+    @msg = {}
+    wit_actions = {
+      :say => -> (session_id, context, msg) {
+        @msg['message'] = msg
+      },
+      :merge => -> (session_id, context, entities, msg) {
+
+        loc = nil if entities.has_key?('location')
+        val = entities['location'][0]['value'] unless loc.nil?
+        loc =  nil if val.nil?
+        unless val.nil?
+          loc =  val.is_a?(Hash) ? val['value'] : val
+        end
+
+        context['loc'] = loc unless loc.nil?
+        return context
+      },
+      :error => -> (session_id, context, error) {
+        p error.message
+      },
+      :'fetch-weather' => -> (session_id, context) {
+        context['forecast'] = 'sunny'
+        return context
+      },
+    }
     @chats = Chat.all
-    wit = Wit.new('Y3SKN3OLWR3LT57GRVRR6EZNAQF7MMMG', Spajam::Application.config.wit_actions)
+    wit = Wit.new('Y3SKN3OLWR3LT57GRVRR6EZNAQF7MMMG', wit_actions)
     message = wit.message("What's the weather?")
     @text = message['outcomes'][0]['_text']
+    @run_actions = wit.run_actions('123abc', {}, {})
   end
 
   # GET /chats/1
