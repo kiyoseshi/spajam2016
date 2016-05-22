@@ -1,5 +1,5 @@
-- if @chats.present?
-  = @chats.order('created_at DESC').first.content
+- if @bot.present?
+  = @bot.content
 - else
   %p Hey, I'm "AI-TAISHO"
 = render partial: 'form'

@@ -2,8 +2,13 @@ class ChatsController < ApplicationController
   before_action :set_chat, only: [:show, :edit, :update, :destroy]
 
   def index
-    @chats = Chat.all
-    @chat = Chat.new()
+    if session[:chat].nil?
+      @chat = Chat.new()
+    else
+      @bot = Chat.new({'content' => session[:chat]['content']})
+      @chat = Chat.new()
+      session[:chat] = nil
+    end
   end
 
   def first_entity_value(entities, entity)
@@ -12,20 +17,6 @@ class ChatsController < ApplicationController
     return nil if val.nil?
     return val.is_a?(Hash) ? val['value'] : val
   end
-
-  def set_context(entities, entity)
-    loc =  nil unless entities.has_key? entity
-    val = entities['location'][0]['value'] unless loc.nil?
-    loc =  nil if val.nil?
-    unless val.nil?
-      loc =  val.is_a?(Hash) ? val['value'] : val
-    end
-    context['loc'] = loc unless loc.nil?
-  end
-
-  # loc = first_entity_value entities, 'location'
-  # context['loc'] = loc unless loc.nil?
-  # return context
 
   def create
     chat = Chat.new(chat_params)
@@ -52,11 +43,8 @@ class ChatsController < ApplicationController
     message = wit.message(chat.content)
     run_actions = wit.run_actions('123abc', chat.content, {})
     bot = Chat.new({"content" => @msg["message"], "user_type" => "bot"})
-    if bot.save
-      redirect_to chats_path
-    else
-      render :index
-    end
+    session[:chat] = {'content' => @msg["message"]}
+    redirect_to chats_path
   end
 
   private
