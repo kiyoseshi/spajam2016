@@ -44,7 +44,7 @@ class ChatsController < ApplicationController
     run_actions = wit.run_actions('123abc', chat.content, {})
     bot = Chat.new({"content" => @msg["message"], "user_type" => "bot"})
     session[:chat] = {'content' => @msg["message"]}
-    redirect_to chats_path
+    redirect_to root_path
   end
 
   private
